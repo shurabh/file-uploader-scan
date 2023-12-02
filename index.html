@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>File Upload</title>
+</head>
+<body>
+  <h1>File Upload and VirusTotal Scan</h1>
+  <form action="/upload" method="post" enctype="multipart/form-data">
+    <input type="file" name="file" accept=".exe, .dll, .zip">
+    <button type="submit">Upload and Scan</button>
+  </form>
+  <div id="result"></div>
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script>
+    $('form').submit(function (e) {
+      e.preventDefault();
+      const formData = new FormData(this);
+
+      $.ajax({
+        url: '/upload',
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function (data) {
+          $('#result').text(JSON.stringify(data, null, 2));
+        },
+        error: function (error) {
+          console.error(error);
+        }
+      });
+    });
+  </script>
+</body>
+</html>
